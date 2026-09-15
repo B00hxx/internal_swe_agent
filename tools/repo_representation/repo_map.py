@@ -13,3 +13,4 @@ class RepoMap:
 
     def find_node(self, path : Path) -> Node | None:
         return self.tree.find_node(path=path)
+

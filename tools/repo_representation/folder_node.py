@@ -1,6 +1,8 @@
+from __future__ import annotations
+from pathlib import Path
+from typing import Iterator
 from .node import Node
 from .file_node import FileNode
-from pathlib import Path
 
 class FolderNode(Node):
     def __init__(self, path : Path, parent : FolderNode | None = None,):
@@ -24,9 +26,9 @@ class FolderNode(Node):
                      return result
         return None
 
-    def iter_folders(self):
+    def iter_folders(self) -> Iterator['FolderNode']:
         for node in self.children:
-            if node.is_folder : 
+            if isinstance(node, FolderNode):
                 yield node
                 yield from node.iter_folders()
 
