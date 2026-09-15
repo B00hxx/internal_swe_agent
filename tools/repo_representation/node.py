@@ -1,9 +1,9 @@
 from abc import ABC
 from pathlib import Path
 class Node(ABC):
-    def __init__(self, path : Path, name : str):
+    def __init__(self, path : Path):
         self.path = path
-        self.name = name
+        self.name = self.path.name
 
     @property
     def is_folder(self) -> bool:

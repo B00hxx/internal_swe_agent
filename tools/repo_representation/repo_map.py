@@ -6,9 +6,9 @@ from pathlib import Path
 class RepoMap:
     def __init__(self, root : Path):
         self.root = root
-        self.tree : FolderNode = self._create_tree()
+        self.tree : FolderNode = self._create_root()
 
-    def _create_tree(self) -> FolderNode:
+    def _create_root(self) -> FolderNode:
         return FolderNode(path=self.root)
 
     def find_node(self, path : Path) -> Node | None:

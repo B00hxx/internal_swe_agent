@@ -23,7 +23,13 @@ class FolderNode(Node):
                 if result is not None:
                      return result
         return None
-        
+
+    def iter_folders(self):
+        for node in self.children:
+            if node.is_folder : 
+                yield node
+                yield from node.iter_folders()
+
     @property
     def is_folder(self) -> bool:
         return True

@@ -4,7 +4,7 @@ from pathlib import Path
 class FileNode(Node):
     def __init__(self, path : Path, parent : FolderNode):
         super().__init__(path=path)
-        self.extension = self.path.stem
+        self.extension = self.path.suffix
         self.parent = parent
 
     @property
