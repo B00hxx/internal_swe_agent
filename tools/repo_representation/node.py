@@ -6,9 +6,9 @@ class Node(ABC):
         self.name = name
 
     @property
-    def is_folder(self):
+    def is_folder(self) -> bool:
         return False
 
     @property
-    def is_file(self):
+    def is_file(self) -> bool:
         return False
