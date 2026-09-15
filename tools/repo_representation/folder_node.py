@@ -32,6 +32,13 @@ class FolderNode(Node):
                 yield node
                 yield from node.iter_folders()
 
+    def iter_files(self) -> Iterator['FileNode']:
+        for node in self.children:
+            if isinstance(node, FileNode):
+                yield node
+            elif isinstance(node, FolderNode):
+                yield from node.iter_files()
+
     @property
     def is_folder(self) -> bool:
         return True
