@@ -39,6 +39,14 @@ class FolderNode(Node):
             elif isinstance(node, FolderNode):
                 yield from node.iter_files()
 
+    def build_tree(self):
+        files, folders = self.iter_files(), self.iter_folders()
+        for file in files:
+            print(file.path)
+        for folder in folders:
+            print(folder)
+        return
+    
     @property
     def is_folder(self) -> bool:
         return True
