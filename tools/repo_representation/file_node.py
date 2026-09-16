@@ -13,6 +13,17 @@ class FileNode(Node):
         self.size = os.path.getsize(str(self.path))
         self.parent = parent
 
+    def serialize(self, root : Path | None = None) -> dict:
+        if root is not None:
+            relative = self.path.relative_to(root)
+        else:
+            relative = self.path
+        info = {"type" : "file",
+                        "path" : str(relative), 
+                        "extension" : self.extension,
+                        "size" : self.size}
+        return info
+
     @property
     def is_file(self) -> bool:
         return True

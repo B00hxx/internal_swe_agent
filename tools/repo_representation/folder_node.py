@@ -39,19 +39,22 @@ class FolderNode(Node):
             elif isinstance(node, FolderNode):
                 yield from node.iter_files()
 
-    def serialize(self) -> dict:
+    def serialize(self, root : Path | None = None) -> dict:
         representation = dict()
         elements = self.children
         for element in elements:
             if isinstance(element, FileNode):
-                representation[element.name] = {"type" : "file",
-                                          "path" : str(element.path), 
-                                          "extension" : element.extension,
-                                          "size" : element.size}
+                representation[element.name] = element.serialize(root=root)
             elif isinstance(element, FolderNode):
+                if root is not None:
+                    relative = element.path.relative_to(root)
+                else:
+                    relative = element.path
                 representation[element.name] = {"type" : "folder",
-                                           "children" : element.serialize()}
+                                                "path" : str(relative),
+                                                "children" : element.serialize(root=root)}
         return representation
+
     @property
     def is_folder(self) -> bool:
         return True
