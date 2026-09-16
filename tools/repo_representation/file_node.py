@@ -1,4 +1,5 @@
 from __future__ import annotations
+import os
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from .folder_node import FolderNode
@@ -9,6 +10,7 @@ class FileNode(Node):
     def __init__(self, path : Path, parent : FolderNode):
         super().__init__(path=path)
         self.extension = self.path.suffix
+        self.size = os.path.getsize(str(self.path))
         self.parent = parent
 
     @property

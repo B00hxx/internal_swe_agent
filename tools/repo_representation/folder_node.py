@@ -39,14 +39,19 @@ class FolderNode(Node):
             elif isinstance(node, FolderNode):
                 yield from node.iter_files()
 
-    def build_tree(self):
-        files, folders = self.iter_files(), self.iter_folders()
-        for file in files:
-            print(file.path)
-        for folder in folders:
-            print(folder)
-        return
-    
+    def serialize(self) -> dict:
+        representation = dict()
+        elements = self.children
+        for element in elements:
+            if isinstance(element, FileNode):
+                representation[element.name] = {"type" : "file",
+                                          "path" : str(element.path), 
+                                          "extension" : element.extension,
+                                          "size" : element.size}
+            elif isinstance(element, FolderNode):
+                representation[element.name] = {"type" : "folder",
+                                           "children" : element.serialize()}
+        return representation
     @property
     def is_folder(self) -> bool:
         return True
