@@ -7,19 +7,17 @@ from .node import Node
 from pathlib import Path
 
 class FileNode(Node):
-    def __init__(self, path : Path, parent : FolderNode):
-        super().__init__(path=path)
+    def __init__(self, path : Path, 
+                 parent : FolderNode, 
+                 root : Path | None = None):
+        super().__init__(path=path, root=root)
         self.extension = self.path.suffix
         self.size = os.path.getsize(str(self.path))
         self.parent = parent
 
-    def serialize(self, root : Path | None = None) -> dict:
-        if root is not None:
-            relative = self.path.relative_to(root)
-        else:
-            relative = self.path
+    def serialize(self) -> dict:
         info = {"type" : "file",
-                        "path" : str(relative), 
+                        "path" : str(self.relative_path), 
                         "extension" : self.extension,
                         "size" : self.size}
         return info

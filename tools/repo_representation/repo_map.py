@@ -8,10 +8,13 @@ class RepoMap:
         self.tree : FolderNode = self._create_root(root=root)
 
     def _create_root(self, root : Path) -> FolderNode:
-        return FolderNode(path=root)
+        return FolderNode(path=root, 
+                          root = root)
 
     def find_node(self, path : Path) -> Node | None:
         return self.tree.find_node(path=path)
 
     def serialize(self) -> dict:
-        return {self.tree.name : self.tree.serialize(root=self.tree.path)}
+        return {self.tree.name : {"type": "folder",
+                              "path": str(self.tree.relative_path),
+                              "children": self.tree.serialize()}}

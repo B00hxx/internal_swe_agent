@@ -1,10 +1,22 @@
 from pathlib import Path
-from ...repo_representation import RepoMap
-from utils import create_dummy_project
+from tools.repo_representation import RepoMap
 
 
-def test_serialization():
-    create_dummy_project()
-    repo_map = RepoMap(root = Path(r'tools\repo_representation\tests\project'))
-    serialized = repo_map.serialize()
-    assert serialized == {'project': {'data': {'type': 'folder', 'path': 'data', 'children': {}}, 'main.py': {'type': 'file', 'path': 'main.py', 'extension': '.py', 'size': 0}, 'README.md': {'type': 'file', 'path': 'README.md', 'extension': '.md', 'size': 0}, 'src': {'type': 'folder', 'path': 'src', 'children': {'utils.py': {'type': 'file', 'path': 'src\\utils.py', 'extension': '.py', 'size': 0}}}}}
+def test_file_node_serialize(dummy_project):
+    repo_map = RepoMap(root=dummy_project)
+    main_py = repo_map.serialize()["project"]["children"]["main.py"]
+    assert main_py == {"type": "file", "path": "main.py", "extension": ".py", "size": 0}
+
+
+def test_folder_node_serialize_nested(dummy_project):
+    repo_map = RepoMap(root=dummy_project)
+    src = repo_map.serialize()["project"]["children"]["src"]
+    assert src["type"] == "folder"
+    assert src["path"] == "src"
+    assert src["children"]["utils.py"]["path"] == str(Path("src") / "utils.py")
+
+
+def test_serialize_empty_folder(dummy_project):
+    repo_map = RepoMap(root=dummy_project)
+    data = repo_map.serialize()["project"]["children"]["data"]
+    assert data == {"type": "folder", "path": "data", "children": {}}
