@@ -7,9 +7,7 @@ from .node import Node
 from pathlib import Path
 
 class FileNode(Node):
-    def __init__(self, path : Path, 
-                 parent : FolderNode, 
-                 root : Path | None = None):
+    def __init__(self, path : Path, parent : FolderNode, root : Path | None = None):
         super().__init__(path=path, root=root)
         self.extension = self.path.suffix
         self.size = os.path.getsize(str(self.path))

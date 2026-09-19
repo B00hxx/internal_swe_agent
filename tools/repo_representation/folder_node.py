@@ -5,9 +5,7 @@ from .node import Node
 from .file_node import FileNode
 
 class FolderNode(Node):
-    def __init__(self, path : Path,
-                 root : Path | None = None,
-                 parent : FolderNode | None = None,):
+    def __init__(self, path : Path, root : Path | None = None, parent : FolderNode | None = None,):
         super().__init__(path=path, root = root)
         self.parent = parent
         self.children : list[Node] = self._populate_children()
