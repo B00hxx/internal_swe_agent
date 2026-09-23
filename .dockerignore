@@ -1,0 +1,38 @@
+# --- Version Control ---
+.git
+.gitignore
+.hg
+.svn
+
+# --- Dependency Folders (Let Docker install these inside the container) ---
+node_modules/
+jspm_packages/
+web_modules/
+venv/
+.venv/
+__pycache__/
+
+# --- Build Artifacts & Caches ---
+dist/
+build/
+target/
+.npm
+.eslintcache
+*.pyc
+*.pyo
+*.pyd
+
+# --- Environment & Sensitive Files (Security) ---
+.env
+.env.*
+*.pem
+*.key
+id_rsa
+secrets.*
+
+# --- Noisy Logs & OS Files ---
+*.log
+.DS_Store
+Thumbs.db
+
+#whatever
