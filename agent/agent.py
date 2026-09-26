@@ -1,18 +1,19 @@
 import os
 
 from dotenv import load_dotenv
-from langchain_core.tools import tool
-from langchain_openai import ChatOpenAI
-from langgraph.graph import StateGraph, START, END, MessagesState
-from langgraph.prebuilt import ToolNode, tools_condition
 from langchain_core.messages import SystemMessage
+from langchain_openai import ChatOpenAI
+from langgraph.graph import START, MessagesState, StateGraph
+from langgraph.prebuilt import ToolNode, tools_condition
 
+load_dotenv()
 class Agent:
     def __init__(self, tools : list, alias : str, system_prompt : str = "You are a helpful AI assistant. /no_think"):
         self.tools = tools
         self.alias = alias
         self.system = SystemMessage(system_prompt)
         self.client = self._get_client().bind_tools(self.tools)
+        self.graph = self.build_graph()
     
     def _get_client(self) -> ChatOpenAI:
         return ChatOpenAI(
