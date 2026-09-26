@@ -1,0 +1,17 @@
+model_list:
+  - model_name: local-coder
+    litellm_params:
+      model: ollama_chat/qwen:0.5b
+      api_base: http://ollama:11434
+    model_info:
+      supports_function_calling: false
+
+  - model_name: qwen-with-tools
+    litellm_params:
+      model: ollama_chat/qwen3:0.6b
+      api_base: http://ollama:11434
+    model_info:
+      supports_function_calling: true
+
+litellm_settings:
+  drop_params: true

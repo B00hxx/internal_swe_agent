@@ -1,6 +1,32 @@
 services:
+  ollama:
+    image: ollama/ollama:latest
+    restart: unless-stopped
+    volumes:
+      - ollama:/root/.ollama            # models survive container rebuilds
+    environment:
+      OLLAMA_CONTEXT_LENGTH: "16384"
+      OLLAMA_KEEP_ALIVE: "30m"
+    ports:
+      - "127.0.0.1:11434:11434"         # optional: host-only, for debugging
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   litellm:
     image: docker.litellm.ai/berriai/litellm:main-stable
+    volumes:
+      - ./litellm_config.yaml:/app/config.yaml
+    command: ["--config", "/app/config.yaml", "--port", "4000"]
     ports:
       - "4000:4000"
     environment:
@@ -10,6 +36,8 @@ services:
       STORE_MODEL_IN_DB: "True"
     depends_on:
       db:
+        condition: service_healthy
+      ollama:
         condition: service_healthy
 
   db:
@@ -27,4 +55,5 @@ services:
       - postgres_data:/var/lib/postgresql/data
 
 volumes:
+  ollama:
   postgres_data:
